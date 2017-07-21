@@ -26,6 +26,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/spf13/cobra"
 	"golang.org/x/net/context"
+	"github.com/docker/docker/plugin"
 )
 
 var externalCAOpt cli.ExternalCAOpt
@@ -226,6 +227,7 @@ var (
 				}()
 			}
 
+			pg := plugin.NewStore()
 			n, err := node.New(&node.Config{
 				Hostname:           hostname,
 				ForceNewCluster:    forceNewCluster,
@@ -241,6 +243,7 @@ var (
 				ElectionTick:       election,
 				AutoLockManagers:   autolockManagers,
 				UnlockKey:          unlockKey,
+				PluginGetter:pg,
 			})
 			if err != nil {
 				return err
